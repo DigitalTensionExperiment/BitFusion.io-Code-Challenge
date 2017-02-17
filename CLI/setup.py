@@ -1,15 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='',
+    name='PyFlask Task',
     version='1.0',
-    py_modules=['restfulFlaskAPI'],
+    py_modules=['dockcli'],
     install_requires=[
         'Click',
         'Docker',
+        'docker-py',
     ],
     entry_points='''
         [console_scripts]
-        restfulFlaskAPI=restfulFlaskAPI:cli
-    ''', 
+        dockcli=dockcli:cli
+    ''',
 )
