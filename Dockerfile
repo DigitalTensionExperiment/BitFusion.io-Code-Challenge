@@ -7,10 +7,12 @@ RUN apt-get install -y python-pip python-dev build-essential
 
 RUN pip install Flask
 
-RUN mkdir flask
-COPY flaskHello.py flask/flaskHello.py
-#RUN python flask/flaskHello.py
-
-ENV FLASK_APP=flask/flaskHello.py
+COPY . /flaskapp
+ENV HOME=/flaskapp
+WORKDIR /flaskapp
 
 EXPOSE 8888
+
+ENTRYPOINT ["python"]
+
+CMD ["/flaskapp/flaskHello.py"]
