@@ -12,9 +12,10 @@ def cli():
     pass
 
 @click.command()
-def run():
+@click.option('--container', help="")
+def run(container):
     """
-    Pull down the container you created in step 1
+    Pull down the container;
     ** Using the Python docker module in your CLI,
     instantiate the container in daemon mode
     and set the name to <container name>
@@ -29,7 +30,8 @@ def run():
 
 
 @click.command()
-def stop():
+@click.option('--container', help="")
+def stop(container):
     """
     Stop the container
     and have it cleanup the container
