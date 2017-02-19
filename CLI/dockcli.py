@@ -3,39 +3,48 @@ import docker
 
 client = docker.from_env()
 
-# COMMANDS:
-#  dockcli run <container name>
-#  dockcli stop <container name>
 
 @click.group()
 def cli():
     pass
 
-@click.command()
-@click.option('--container', help="")
-def run(container):
-    """
-    Pull down the container;
-    ** Using the Python docker module in your CLI,
-    instantiate the container in daemon mode
-    and set the name to <container name>
 
-    ** Have it look up the health status
-    (based on the healtcheck you created above),
-    if the status is good, return the URL and port of the running flask app to the terminal
+# COMMAND:  dockcli run <container name> ;
+@click.command()
+@click.option('--imagename', help="")
+def run(imagename):
+    """
+    Pull down the specified container ;
+    Instantiate the container in daemon mode: -d (detached) ;
+    Check health of container:
+      if the status is good,
+      return URL and port of the running flask app ;
     (e.g. "Your app is running on http://localhost:8888")
     """
+
+    # Pull down the specified container ;
+    image = client.images.pull(imagename)
+    print "Image pull: successful;"
+
+    # instantiate the container in daemon mode: -d (detached) ;
+    container = client.containers.run(image, detach=True)
+    print "Container run from image: successful;"
+
+    # Check health of container:
 
     return 0
 
 
+# COMMAND:  dockcli stop <container name> ;
 @click.command()
-@click.option('--container', help="")
-def stop(container):
+@click.option('--containername', help="")
+def stop(containername):
     """
     Stop the container
     and have it cleanup the container
     """
+
+    # docker stop <containername>
 
     return 0
 
