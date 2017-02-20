@@ -1,5 +1,6 @@
 import click
 import docker
+import requests
 
 
 client = docker.from_env()
@@ -26,8 +27,7 @@ def run(containername):
 
     try:
         # $ docker run --name mdgacontainer -d -p 8888:8888  mdga/ubuntu:latest
-        container = client.containers.run(image, detach=True, ports={'8888/tcp': 8888}, name=containername)
-        # container = client.containers.get(containername)
+        client.containers.run(image, detach=True, ports={'8888/tcp': 8888}, name=containername)
     except docker.errors.APIError as e:
         print(e)
         exit(-1)
@@ -59,9 +59,11 @@ def stop(containername):
     Runs cleanup
     """
 
-    # docker stop <containername>
+    # $ docker stop <containername>
     container = client.containers.get(containername)
+
     print("<-----------------[stop]---------------->")
+
     # The stop() always hits a timeOut error ...
     try:
         container.stop(timeout=30)
