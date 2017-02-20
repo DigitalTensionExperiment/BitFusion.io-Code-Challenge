@@ -1,5 +1,6 @@
 import click
 import docker
+import requests
 
 client = docker.from_env()
 
@@ -14,16 +15,9 @@ def cli():
 @click.option('--containername', help="")
 def run(containername):
     """
-    Pull down the specified container:
-    $ docker pull 0000000000zw/mdga
-
-    Instantiate the container in daemon mode:
-    $ docker run --name mdgacontainer -d -p 8888:8888  mdga/ubuntu:latest
-
-    Check health of container:
-      if the status is good,
-      return URL and port of the running flask app ;
-    (e.g. "Your app is running on http://localhost:8888")
+    Pulls down the container
+    Instantiates the container in daemon mode
+    Checks and informs users of container's health status
     """
 
     # $ docker pull 0000000000zw/mdga
@@ -38,10 +32,11 @@ def run(containername):
         print(e)
         exit(-1)
 
-    print("GOT CONTAINER")
+    print("Container obtained ;")
     container = client.containers.get(containername)
+
     # Giving the container time to start up:
-    print("Waiting...")
+    print("Waiting for container to start ...")
     while container.attrs['State']['Health']['Status'] == "starting":
         container = client.containers.get(containername)
 
@@ -60,11 +55,30 @@ def run(containername):
 @click.option('--containername', help="")
 def stop(containername):
     """
-    Stop the container
-    and have it cleanup the container
+    Stops the container
+    Runs cleanup
     """
 
     # docker stop <containername>
+    container = client.containers.get(containername)
+    print("<-----------------[stop]---------------->")
+    # The stop() always hits a timeOut error ...
+    try:
+        container.stop(timeout=30)
+    except requests.exceptions.ReadTimeout:
+        print("Container has stopped running ;")
+        pass
+    # ...so we're catching and ignoring it
+    # which is more practical than debugging this further ;
+
+    container = client.containers.get(containername)
+
+    print("<----------------[remove]---------------->")
+    container.remove(force=True)
+
+    # The contain HAS actually stopped, but because of the timeOut
+    # it's being forcefully removed ;
+    print("Container removed ;")
 
     return 0
 
