@@ -11,8 +11,8 @@ def cli():
 
 # COMMAND:  dockcli run <container name> ;
 @click.command()
-@click.option('--imagename', default="0000000000zw/mdga", help="")
-def run(imagename):
+@click.option('--containername', help="")
+def run(containername):
     """
     Pull down the specified container:
     $ docker pull 0000000000zw/mdga
@@ -26,15 +26,31 @@ def run(imagename):
     (e.g. "Your app is running on http://localhost:8888")
     """
 
-    # Pull down the specified container ;
-    image = client.images.pull(imagename)
-    print "Image pull: complete ;"
+    # $ docker pull 0000000000zw/mdga
+    image = client.images.pull("0000000000zw/mdga")
+    print("Image pull complete ;")
 
-    # instantiate the container in daemon mode: -d (detached) ;
-    container = client.containers.run(image, detach=True)
-    print "Container run from image: successful ;"
+    try:
+        # $ docker run --name mdgacontainer -d -p 8888:8888  mdga/ubuntu:latest
+        container = client.containers.run(image, detach=True, ports={'8888/tcp': 8888}, name=containername)
+        # container = client.containers.get(containername)
+    except docker.errors.APIError as e:
+        print(e)
+        exit(-1)
 
-    # Check health of container:
+    print("GOT CONTAINER")
+    container = client.containers.get(containername)
+    # Giving the container time to start up:
+    print("Waiting...")
+    while container.attrs['State']['Health']['Status'] == "starting":
+        container = client.containers.get(containername)
+
+    # Checking health of container:
+    if container.attrs['State']['Health']['Status'] == 'healthy':
+        # "return URL and port of the running flask app"
+        print("Your app is running on http://localhost:8888/hello ;")
+    else:
+        print("The health of your container is %s " % container.attrs['State']['Health']['Status'])
 
     exit(0)
 

@@ -5,9 +5,8 @@ setup(
     version='1.0',
     py_modules=['dockcli'],
     install_requires=[
-        'click',
-        'docker',
-        'docker-py',
+        'Click',
+        'Docker',
     ],
     entry_points='''
         [console_scripts]
