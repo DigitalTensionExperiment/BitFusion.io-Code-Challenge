@@ -13,7 +13,8 @@ def cli():
 
 # COMMAND:  dockcli run <container name> :
 @click.command()
-@click.option('--containername', help="")
+#@click.option('--containername', help="")
+@click.argument('containername')
 def run(containername):
     """
     Pulls down the container from 0000000000zw/mdga ;
@@ -61,7 +62,8 @@ def run(containername):
 
 # COMMAND:  dockcli stop <container name> :
 @click.command()
-@click.option('--containername', help="")
+#@click.option('--containername', help="")
+@click.argument('containername')
 def stop(containername):
     """
     Stops the container ;
