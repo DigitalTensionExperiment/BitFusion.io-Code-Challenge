@@ -1,6 +1,6 @@
 import click
 import docker
-import requests
+
 
 client = docker.from_env()
 
