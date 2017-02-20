@@ -13,7 +13,6 @@ def cli():
 
 # COMMAND:  dockcli run <container name> :
 @click.command()
-#@click.option('--containername', help="")
 @click.argument('containername')
 def run(containername):
     """
@@ -62,7 +61,6 @@ def run(containername):
 
 # COMMAND:  dockcli stop <container name> :
 @click.command()
-#@click.option('--containername', help="")
 @click.argument('containername')
 def stop(containername):
     """
