@@ -21,12 +21,12 @@ to make the dockcli module available:
 After this has successfully completed, decide on a name for the container,
 and pass it in as an argument with the following command:
 
->> $ dockcli run <containername>
+>> $ dockcli run \<containername\>
 
 
 To stop and remove the container, run the following command:
 
->> $ dockcli stop <containername>
+>> $ dockcli stop \<containername\>
 
 
 As it runs, the program will be updating you of its progress via stdOut.
