@@ -11,11 +11,15 @@ def cli():
 
 # COMMAND:  dockcli run <container name> ;
 @click.command()
-@click.option('--imagename', help="")
+@click.option('--imagename', default="0000000000zw/mdga", help="")
 def run(imagename):
     """
-    Pull down the specified container ;
-    Instantiate the container in daemon mode: -d (detached) ;
+    Pull down the specified container:
+    $ docker pull 0000000000zw/mdga
+
+    Instantiate the container in daemon mode:
+    $ docker run --name mdgacontainer -d -p 8888:8888  mdga/ubuntu:latest
+
     Check health of container:
       if the status is good,
       return URL and port of the running flask app ;
@@ -24,15 +28,15 @@ def run(imagename):
 
     # Pull down the specified container ;
     image = client.images.pull(imagename)
-    print "Image pull: successful;"
+    print "Image pull: complete ;"
 
     # instantiate the container in daemon mode: -d (detached) ;
     container = client.containers.run(image, detach=True)
-    print "Container run from image: successful;"
+    print "Container run from image: successful ;"
 
     # Check health of container:
 
-    return 0
+    exit(0)
 
 
 # COMMAND:  dockcli stop <container name> ;
