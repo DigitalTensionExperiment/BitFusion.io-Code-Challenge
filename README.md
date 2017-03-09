@@ -1,4 +1,11 @@
-# RESTfulFlaskApp
+# BitFusion Code Challenge 
+
+Build a docker container with a restful Flask app and a CLI tool that wraps around docker and instantiates your container:  
+
+1. Build a container with a simple flask app 
+2. Build a CLI in python to interact with your container 
+
+
 
 Note: The following code must be run in python 3.x.x ;
 
